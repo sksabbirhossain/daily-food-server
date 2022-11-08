@@ -29,6 +29,28 @@ app.get("/", (req, res) => {
 });
 
 // add services
+app.post("/api/add-service", async (req, res) => {
+  try {
+    const createService = await services.insertOne(req.body);
+    if (createService.acknowledged) {
+      res.send({
+        success: true,
+        data: createService,
+      });
+    } else {
+      res.send({
+        success: false,
+        err: "something worng try again",
+      });
+    }
+  } catch (err) {
+    console.log(err, err.message);
+    res.send({
+      success: false,
+      err: err.message,
+    });
+  }
+});
 
 // listening the server
 app.listen("5000", () => {
