@@ -130,6 +130,24 @@ app.get("/api/reviews/:id", async (req, res) => {
   }
 });
 
+// get suer all reviews
+app.get("/api/my-reviews/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const review = await reviews.find({ user_id: id });
+    const allReviews = await review.toArray();
+    res.send({
+      success: true,
+      data: allReviews,
+    });
+  } catch {
+    res.send({
+      success: false,
+      message: "something went worng!",
+    });
+  }
+});
+
 // listening the server
 app.listen("5000", () => {
   console.log("listen server on 5000 port");
