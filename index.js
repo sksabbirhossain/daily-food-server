@@ -22,6 +22,7 @@ dbConnect();
 
 // create collections
 const services = clint.db("dailyFood").collection("services");
+const reviews = clint.db("dailyFood").collection("reviews");
 
 // route handle
 app.get("/api/services", async (req, res) => {
@@ -71,6 +72,30 @@ app.post("/api/add-service", async (req, res) => {
       res.send({
         success: true,
         data: createService,
+      });
+    } else {
+      res.send({
+        success: false,
+        err: "something worng try again",
+      });
+    }
+  } catch (err) {
+    console.log(err, err.message);
+    res.send({
+      success: false,
+      err: err.message,
+    });
+  }
+});
+
+// add review
+app.post("/api/add-review", async (req, res) => {
+  try {
+    const createReviews = await reviews.insertOne(req.body);
+    if (createReviews.acknowledged) {
+      res.send({
+        success: true,
+        data: createReviews,
       });
     } else {
       res.send({
