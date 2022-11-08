@@ -1,5 +1,5 @@
 const express = require("express");
-const { MongoClient } = require("mongodb");
+const { MongoClient, ObjectId } = require("mongodb");
 const cors = require("cors");
 
 const app = express();
@@ -28,17 +28,37 @@ app.get("/api/services", async (req, res) => {
   try {
     const query = {};
     const serviceData = services.find(query);
+    const data = services.find(query).limit(3);
     const allServices = await serviceData.toArray();
+    const homeData = await data.toArray();
     console.log(allServices);
     res.send({
       success: true,
       data: allServices,
+      homeData: homeData,
     });
   } catch (err) {
     console.log(err, err.message);
     res.send({
       success: false,
       err: err.message,
+    });
+  }
+});
+
+//get service details
+app.get("/api/service/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const details = await services.findOne({ _id: ObjectId(id) });
+    res.send({
+      success: true,
+      data: details,
+    });
+  } catch {
+    res.send({
+      success: false,
+      message: "something went worng!",
     });
   }
 });
@@ -63,23 +83,6 @@ app.post("/api/add-service", async (req, res) => {
     res.send({
       success: false,
       err: err.message,
-    });
-  }
-});
-
-// service details
-app.get("/api/service/:id", async (req, res) => {
-  const id = req.params.id;
-  try {
-    const serviceDetails = await services.findOne({ _id: ObjectId(id) });
-    res.send({
-      success: true,
-      data: serviceDetails,
-    });
-  } catch {
-    res.send({
-      success: false,
-      message: "Something worng try again",
     });
   }
 });
