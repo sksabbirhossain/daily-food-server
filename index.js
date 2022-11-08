@@ -26,14 +26,14 @@ const services = clint.db("dailyFood").collection("services");
 // route handle
 app.get("/api/services", async (req, res) => {
   try {
-      const query = {};
-      const serviceData = services.find(query);
-      const allServices = await serviceData.toArray();
-      console.log(allServices)
-      res.send({
-        success: true,
-        data: allServices,
-      });
+    const query = {};
+    const serviceData = services.find(query);
+    const allServices = await serviceData.toArray();
+    console.log(allServices);
+    res.send({
+      success: true,
+      data: allServices,
+    });
   } catch (err) {
     console.log(err, err.message);
     res.send({
@@ -63,6 +63,23 @@ app.post("/api/add-service", async (req, res) => {
     res.send({
       success: false,
       err: err.message,
+    });
+  }
+});
+
+// service details
+app.get("/api/service/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const serviceDetails = await services.findOne({ _id: ObjectId(id) });
+    res.send({
+      success: true,
+      data: serviceDetails,
+    });
+  } catch {
+    res.send({
+      success: false,
+      message: "Something worng try again",
     });
   }
 });
