@@ -112,6 +112,24 @@ app.post("/api/add-review", async (req, res) => {
   }
 });
 
+// get review for service
+app.get("/api/reviews/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const review = await reviews.find({ service_id: id });
+    const allReviews = await review.toArray();
+    res.send({
+      success: true,
+      data: allReviews,
+    });
+  } catch {
+    res.send({
+      success: false,
+      message: "something went worng!",
+    });
+  }
+});
+
 // listening the server
 app.listen("5000", () => {
   console.log("listen server on 5000 port");
