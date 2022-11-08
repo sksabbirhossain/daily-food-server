@@ -24,8 +24,23 @@ dbConnect();
 const services = clint.db("dailyFood").collection("services");
 
 // route handle
-app.get("/", (req, res) => {
-  res.send("hello world");
+app.get("/api/services", async (req, res) => {
+  try {
+      const query = {};
+      const serviceData = services.find(query);
+      const allServices = await serviceData.toArray();
+      console.log(allServices)
+      res.send({
+        success: true,
+        data: allServices,
+      });
+  } catch (err) {
+    console.log(err, err.message);
+    res.send({
+      success: false,
+      err: err.message,
+    });
+  }
 });
 
 // add services
