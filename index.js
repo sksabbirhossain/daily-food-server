@@ -148,6 +148,23 @@ app.get("/api/my-reviews/:id", async (req, res) => {
   }
 });
 
+// get review for update
+app.get("/api/my-review/update/:id", async (req, res) => {
+  const id = req.params.id;
+  try {
+    const updateReview = await reviews.findOne({ _id: ObjectId(id) });
+    res.send({
+      success: true,
+      data: updateReview,
+    });
+  } catch {
+    res.send({
+      success: false,
+      message: "something went worng!",
+    });
+  }
+});
+
 // listening the server
 app.listen("5000", () => {
   console.log("listen server on 5000 port");
