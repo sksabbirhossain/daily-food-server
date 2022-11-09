@@ -73,6 +73,7 @@ app.get("/api/services", async (req, res) => {
   } catch (err) {
     console.log(err, err.message);
     res.send({
+      
       success: false,
       err: err.message,
     });
