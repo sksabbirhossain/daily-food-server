@@ -29,8 +29,9 @@ function verifyJwt(req, res, next) {
 }
 
 // database connection
-const url = "mongodb://localhost:27017";
+const url = `mongodb+srv://${process.env.MONGODB_USER_NAME}:${process.env.MONGODB_PASSWORD}@cluster0.mkg7q0j.mongodb.net/?retryWrites=true&w=majority`;
 const clint = new MongoClient(url);
+
 async function dbConnect() {
   try {
     await clint.connect();
@@ -39,7 +40,7 @@ async function dbConnect() {
     console.log("something worng!!!");
   }
 }
-dbConnect();
+dbConnect().catch(err=> console.log(err));
 
 // create collections
 const services = clint.db("dailyFood").collection("services");
