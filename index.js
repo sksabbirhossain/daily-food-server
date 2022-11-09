@@ -97,7 +97,6 @@ app.get("/api/service/:id", async (req, res) => {
 
 // add services
 app.post("/api/add-service", verifyJwt, async (req, res) => {
-  
   try {
     const createService = await services.insertOne(req.body);
     if (createService.acknowledged) {
@@ -148,7 +147,9 @@ app.post("/api/add-review", async (req, res) => {
 app.get("/api/reviews/:id", async (req, res) => {
   const id = req.params.id;
   try {
-    const review = await reviews.find({ service_id: id });
+    const review = await reviews
+      .find({ service_id: id })
+      .sort({ currentdata: -1 });
     const allReviews = await review.toArray();
     res.send({
       success: true,
