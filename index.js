@@ -40,7 +40,7 @@ async function dbConnect() {
     console.log("something worng!!!");
   }
 }
-dbConnect().catch(err=> console.log(err));
+dbConnect().catch((err) => console.log(err));
 
 // create collections
 const services = clint.db("dailyFood").collection("services");
@@ -73,7 +73,6 @@ app.get("/api/services", async (req, res) => {
   } catch (err) {
     console.log(err, err.message);
     res.send({
-      
       success: false,
       err: err.message,
     });
@@ -244,11 +243,6 @@ app.patch("/api/my-review/update/:id", verifyJwt, async (req, res) => {
 // delete review
 app.delete("/api/my-review/delete/:id", verifyJwt, async (req, res) => {
   const id = req.params.id;
-
-  const decoded = req.decoded;
-  if (decoded.email !== req.query.email) {
-    return res.status(403).send({ message: "unauthorized access" });
-  }
 
   try {
     const result = await reviews.deleteOne({ _id: ObjectId(id) });
