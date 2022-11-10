@@ -210,11 +210,6 @@ app.get("/api/my-review/update/:id", verifyJwt, async (req, res) => {
 app.patch("/api/my-review/update/:id", verifyJwt, async (req, res) => {
   const id = req.params.id;
 
-  const decoded = req.decoded;
-  if (decoded.email !== req.query.email) {
-    res.status(403).send({ message: "unauthorized access" });
-  }
-
   try {
     const updateReviews = await reviews.updateOne(
       { _id: ObjectId(id) },
